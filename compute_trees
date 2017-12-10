@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+
+import argparse
+import subprocess
+from Bio import Align, AlignIO, SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+
+def is_noisy(seq):
+    seq_len = len(seq)
+
+    # Check if more than 50 % indels
+    indel = seq.count('-')
+    if indel > seq_len / 2:
+        return True
+
+    # Check if at least 50 % of amino acids are unique
+    amino = dict((letter,seq.count(letter)) for letter in set(seq))
+    if len(amino) > seq_len / 2:
+        return True
+
+    # Check if any amino acids appear more than twice
+    num_amino = amino.values()
+    if all(i < 3 for i in num_amino):
+        return True
+
+    return False
+
+def remove_noise(msa):
+    filtered_msa = []
+
+    for record in SeqIO.parse(msa,'fasta'):
+        if is_noisy(record.seq):
+            pass
+        else:
+            filtered_msa.append(SeqRecord(Seq(str(record.seq)),str(record.id)))
+
+    assert filtered_msa, 'All sequences were noisy, exiting program'
+
+    return Align.MultipleSeqAlignment(filtered_msa)
+
+def gen_tree(infile):
+
+    args = './fastphylo/fastprot -I' + infile + '-O xml > output.xml'
+    subprocess.run([args],shell=True)
+
+    args = './fastphylo/fnj -I output.xml -O newick'
+    subprocess.run([args],shell=True)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description = 'Remove noise and compute'
+                         'trees for both the original and filtered alignment')
+
+    parser.add_argument('input',help='Input file in fasta format')
+    parser.add_argument('output',help='Output file for the filtered alignment')
+
+    args = parser.parse_args()
+
+    input_file = open(args.input,'r')
+
+    #orig_tree = gen_tree(args.input)
+
+    #orig_alignment = AlignIO.read(input_file,'fasta')
+    filtered_alignment = remove_noise(input_file)
+
+    output_file = open(args.output,'w')
+    output_name = args.output
+
+    AlignIO.write(filtered_alignment,output_file,'fasta')
+
+    gen_tree(output_name)
