@@ -20,7 +20,19 @@ Also started writing a bit on the Introduction-part of my project report.
 
 ### Tuesday, Dec 12th
 
+Switched tree building approach to using `cogent`. First I tried using the function `fasttree`, but it did not work as I wanted so I switched to the solution provided on this [**webpage**](http://pycogent.org/examples/maketree_from_proteinseqs.html).
+
+I can now take one file from one of the provided directories, create trees for both the original alignment and for the filtered alignment and then compare them to the reference tree.
+
+I will nog begin working on creating trees for a whole directory and putting them in separate directories to be able to go through all of them a bit faster.
+
+Will also start working on ways to control my scripts.
+
 ### Wednesday, Dec 13th
+
+Got everything to run smoothly and computed the symmetric distances between all the trees and the reference tree.
+
+I now have all my data, but I still need to work on the controls and write the rest of my report.
 
 ### Thursday, Dec 14th
 
