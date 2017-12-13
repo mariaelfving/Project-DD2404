@@ -1,1 +1,54 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
+import argparse
+import os
+import dendropy
+from dendropy.calculate import treecompare
+
+def compare_dist(ref_tree,compare_trees):
+
+    sym_dist_list = []
+
+    for tree in compare_trees:
+        tree.encode_bipartitions()
+        sym_dist = treecompare.symmetric_difference(ref_tree, tree)
+        sym_dist_list.append(sym_dist)
+
+    return sym_dist_list
+
+def get_trees(tree_dir):
+
+    tree_list = []
+
+    for (dirpath, dirname, filename) in os.walk(tree_dir):
+        for spec_file in filename:
+            if '.tree' in spec_file:
+                tree_list.append(tree_dir + '/' + spec_file)
+
+    return tree_list
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Compare the generated trees')
+
+    parser.add_argument('ref_tree',help='The reference tree to be used')
+    parser.add_argument('compare_trees')
+    #parser.add_argument('output',help='Output file to be used')
+
+    args = parser.parse_args()
+
+    #assert os.path.isfile(args.ref_tree), 'Reference is not a file'
+    #assert os.path.isdir(args.dir), 'Directory does not exist'
+
+    tns = dendropy.TaxonNamespace()
+    ref_tree = dendropy.Tree.get(path=args.ref_tree,schema='newick',taxon_namespace=tns)
+    ref_tree.encode_bipartitions()
+    trees = get_trees(args.compare_trees)
+    compare_trees = [dendropy.Tree.get(path=t,schema='newick',taxon_namespace=tns) for t in trees]
+
+    outfile_name = args.compare_trees + '/comparison_' + args.compare_trees.split('/')[-1] + '.txt'
+    outfile = open(outfile_name,'w+')
+    sym_dist_list = compare_dist(ref_tree,compare_trees)
+    i = 1
+    for dist in sym_dist_list:
+        outfile.write('s' + '{0:0>3}'.format(i) + '.align.1.msl: \t' + str(dist) + '\n')
+        i += 1
