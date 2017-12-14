@@ -36,4 +36,8 @@ I now have all my data, but I still need to work on the controls and write the r
 
 ### Thursday, Dec 14th
 
+Noticed something was wrong somewhere in my code because the smallest value for the symmetric distance for one of the filtered alignments was zero... so I spent almost all day locating, but at last I located it. So, now I have what I hope to be the correct data!
+
+Now it is time for the controls and for the report. Starts to seem a bit optimistic to be done by tomorrow, but hopefully I can be done by Saturday, at least!
+
 ### Friday, Dec 15th
