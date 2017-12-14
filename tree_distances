@@ -32,23 +32,18 @@ if __name__ == '__main__':
 
     parser.add_argument('ref_tree',help='The reference tree to be used')
     parser.add_argument('compare_trees')
-    #parser.add_argument('output',help='Output file to be used')
 
     args = parser.parse_args()
 
-    #assert os.path.isfile(args.ref_tree), 'Reference is not a file'
-    #assert os.path.isdir(args.dir), 'Directory does not exist'
-
+    trees = get_trees(args.compare_trees)
+    
     tns = dendropy.TaxonNamespace()
     ref_tree = dendropy.Tree.get(path=args.ref_tree,schema='newick',taxon_namespace=tns)
     ref_tree.encode_bipartitions()
-    trees = get_trees(args.compare_trees)
     compare_trees = [dendropy.Tree.get(path=t,schema='newick',taxon_namespace=tns) for t in trees]
 
-    outfile_name = args.compare_trees + '/comparison_' + args.compare_trees.split('/')[-1] + '.txt'
+    outfile_name = 'compare_files/comparison_' + args.compare_trees.split('_')[0] + '_' + args.compare_trees.split('/')[-1] + '.txt'
     outfile = open(outfile_name,'w+')
     sym_dist_list = compare_dist(ref_tree,compare_trees)
-    i = 1
     for dist in sym_dist_list:
-        outfile.write('s' + '{0:0>3}'.format(i) + '.align.1.msl: \t' + str(dist) + '\n')
-        i += 1
+        outfile.write(str(dist) + '\n')

@@ -22,10 +22,8 @@ if __name__ == '__main__':
     max_list = []
     mean_list = []
     median_list = []
-    names = ['filtered asym 0.5', 'filtered asym 1.0', 'filtered asym 2.0',
-        'filtered sym 0.5', 'filtered sym 1.0', 'filtered sym 2.0',
-        'orginal asym 0.5', 'orginal asym 1.0', 'orginal asym 2.0',
-        'orginal sym 0.5', 'orginal sym 1.0', 'orginal sym 2.0']
+    names = ['asymmetric 0.5', 'asymmetric 1.0', 'asymmetric 2.0',
+        'symmetric 0.5', 'symmetric 1.0', 'symmetric 2.0']
 
     output = open('results','w+')
     i = 0
@@ -40,11 +38,7 @@ if __name__ == '__main__':
         i += 1
 
     output = open('results','w+')
-    output.write('{:>18} {:>5} {:>5} {:>15} {:>5}'.format('directory','max', 'min', 'mean', 'median') + '\n')
-    for i in range(len(min_list)):
-        output.write('{:>18} {:>5} {:>5} {:>15} {:>5}'.format(names[i], str(max_list[i]), str(min_list[i]), str(mean_list[i]), str(median_list[i])) + '\n')
-
-    print(min_list)
-    print(max_list)
-    print(mean_list)
-    print(median_list)
+    output.write('{:>14} {:>10} {:>10} {:>30} {:>10}'.format('','max', 'min', 'mean', 'median') + '\n')
+    output.write('{:>14} {:>5} {:>5} {:>5} {:>5} {:>15} {:>15} {:>5} {:>5}'.format('','Filter','Orig','Filter','Orig','Filter','Orig','Filter','Orig') + '\n')
+    for i in range(len(min_list)/2):
+        output.write('{:>14} {:>5} {:>5} {:>5} {:>5} {:>15} {:>15} {:>5} {:>5}'.format(names[i], str(max_list[i]), str(max_list[i+6]), str(min_list[i]), str(min_list[i+6]), str(mean_list[i]), str(mean_list[i+6]), str(median_list[i]), str(median_list[i+6])) + '\n')

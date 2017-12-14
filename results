@@ -1,13 +1,8 @@
-         directory   max   min            mean median
- filtered asym 0.5    26     8   19.0866666667  20.0
- filtered asym 1.0    26    10   20.2533333333  20.0
- filtered asym 2.0    26    12           21.16  22.0
-  filtered sym 0.5    26     0           17.48  18.0
-  filtered sym 1.0    26     4   18.1133333333  18.0
-  filtered sym 2.0    26     8   20.0133333333  20.0
-  orginal asym 0.5    26     6   19.3333333333  20.0
-  orginal asym 1.0    26    10   20.0466666667  20.0
-  orginal asym 2.0    26    10            21.1  22.0
-   orginal sym 0.5    26     4   17.3933333333  18.0
-   orginal sym 1.0    26     4   17.7933333333  18.0
-   orginal sym 2.0    26     8   19.7733333333  20.0
+                      max        min                           mean     median
+               Filter  Orig Filter  Orig          Filter            Orig Filter  Orig
+asymmetric 0.5    26    26     8     6   19.0866666667   19.3333333333  20.0  20.0
+asymmetric 1.0    26    26    10    10   20.2533333333   20.0466666667  20.0  20.0
+asymmetric 2.0    26    26    12    10           21.16            21.1  22.0  22.0
+ symmetric 0.5    26    26     4     4   17.5733333333   17.3933333333  18.0  18.0
+ symmetric 1.0    26    26     4     4   18.1133333333   17.7933333333  18.0  18.0
+ symmetric 2.0    26    26     8     8   20.0133333333   19.7733333333  20.0  20.0
