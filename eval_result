@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import numpy
+
+if __name__ == '__main__':
+    fa05 = open('compare_files/comparison_filtered_asymmetric_0.5.txt','r')
+    fa10 = open('compare_files/comparison_filtered_asymmetric_1.0.txt','r')
+    fa20 = open('compare_files/comparison_filtered_asymmetric_2.0.txt','r')
+    fs05 = open('compare_files/comparison_filtered_symmetric_0.5.txt','r')
+    fs10 = open('compare_files/comparison_filtered_symmetric_1.0.txt','r')
+    fs20 = open('compare_files/comparison_filtered_symmetric_2.0.txt','r')
+    oa05 = open('compare_files/comparison_original_asymmetric_0.5.txt','r')
+    oa10 = open('compare_files/comparison_original_asymmetric_1.0.txt','r')
+    oa20 = open('compare_files/comparison_original_asymmetric_2.0.txt','r')
+    os05 = open('compare_files/comparison_original_symmetric_0.5.txt','r')
+    os10 = open('compare_files/comparison_original_symmetric_1.0.txt','r')
+    os20 = open('compare_files/comparison_original_symmetric_2.0.txt','r')
+
+    file_list = [fa05,fa10,fa20,fs05,fs10,fs20,oa05,oa10,oa20,os05,os10,os20]
+
+    min_list = []
+    max_list = []
+    mean_list = []
+    median_list = []
+    names = ['filtered asym 0.5', 'filtered asym 1.0', 'filtered asym 2.0',
+        'filtered sym 0.5', 'filtered sym 1.0', 'filtered sym 2.0',
+        'orginal asym 0.5', 'orginal asym 1.0', 'orginal asym 2.0',
+        'orginal sym 0.5', 'orginal sym 1.0', 'orginal sym 2.0']
+
+    output = open('results','w+')
+    i = 0
+    for files in file_list:
+        ints = []
+        for line in files:
+            ints.append(int(line.split('\n')[0]))
+        min_list.append(min(ints))
+        max_list.append(max(ints))
+        mean_list.append(numpy.mean(ints))
+        median_list.append(numpy.median(ints))
+        i += 1
+
+    output = open('results','w+')
+    output.write('{:>18} {:>5} {:>5} {:>15} {:>5}'.format('directory','max', 'min', 'mean', 'median') + '\n')
+    for i in range(len(min_list)):
+        output.write('{:>18} {:>5} {:>5} {:>15} {:>5}'.format(names[i], str(max_list[i]), str(min_list[i]), str(mean_list[i]), str(median_list[i])) + '\n')
+
+    print(min_list)
+    print(max_list)
+    print(mean_list)
+    print(median_list)
