@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 import numpy
+import pylab
 
 if __name__ == '__main__':
+    # All the symmetric differences
     fa05 = open('compare_files/comparison_filtered_asymmetric_0.5.txt','r')
     fa10 = open('compare_files/comparison_filtered_asymmetric_1.0.txt','r')
     fa20 = open('compare_files/comparison_filtered_asymmetric_2.0.txt','r')
@@ -16,6 +18,7 @@ if __name__ == '__main__':
     os10 = open('compare_files/comparison_original_symmetric_1.0.txt','r')
     os20 = open('compare_files/comparison_original_symmetric_2.0.txt','r')
 
+    # List with all the files
     file_list = [fa05,fa10,fa20,fs05,fs10,fs20,oa05,oa10,oa20,os05,os10,os20]
 
     min_list = []
@@ -25,20 +28,49 @@ if __name__ == '__main__':
     names = ['asymmetric 0.5', 'asymmetric 1.0', 'asymmetric 2.0',
         'symmetric 0.5', 'symmetric 1.0', 'symmetric 2.0']
 
+    # Loop through all files and get the content as integers
+    # Calculate max, min, mean and median value for each
+    int_list = []
     output = open('results','w+')
     i = 0
     for files in file_list:
         ints = []
         for line in files:
             ints.append(int(line.split('\n')[0]))
+        int_list.append(ints)
         min_list.append(min(ints))
         max_list.append(max(ints))
         mean_list.append(numpy.mean(ints))
         median_list.append(numpy.median(ints))
         i += 1
 
+    # Write the max, min, mean and median to results file
     output = open('results','w+')
-    output.write('{:>14} {:>10} {:>10} {:>30} {:>10}'.format('','max', 'min', 'mean', 'median') + '\n')
-    output.write('{:>14} {:>5} {:>5} {:>5} {:>5} {:>15} {:>15} {:>5} {:>5}'.format('','Filter','Orig','Filter','Orig','Filter','Orig','Filter','Orig') + '\n')
+    output.write('{:>14} {:>10} {:>10} {:>30} {:>10}'.format('','max', 'min',
+                                            'mean', 'median') + '\n')
+    output.write('{:>14} {:>5} {:>5} {:>5} {:>5} {:>15} {:>15} {:>5}'
+                    '{:>5}'.format('','Filter','Orig','Filter','Orig','Filter',
+                    'Orig','Filter','Orig') + '\n')
     for i in range(len(min_list)/2):
-        output.write('{:>14} {:>5} {:>5} {:>5} {:>5} {:>15} {:>15} {:>5} {:>5}'.format(names[i], str(max_list[i]), str(max_list[i+6]), str(min_list[i]), str(min_list[i+6]), str(mean_list[i]), str(mean_list[i+6]), str(median_list[i]), str(median_list[i+6])) + '\n')
+        output.write('{:>14} {:>5} {:>5} {:>5} {:>5} {:>15} {:>15} {:>5}'
+                    '{:>5}'.format(names[i], str(max_list[i]), str(max_list[i+6]),
+                    str(min_list[i]), str(min_list[i+6]), str(mean_list[i]),
+                    str(mean_list[i+6]), str(median_list[i]),
+                    str(median_list[i+6])) + '\n')
+
+    # Create histogram of all symmetric distances for all directories
+    names_2 = ['Filtered asymmetric 0.5', 'Filtered asymmetric 1.0', 'Filtered asymmetric 2.0',
+        'Filtered symmetric 0.5', 'Filtered symmetric 1.0', 'Filtered symmetric 2.0',
+        'Original asymmetric 0.5', 'Original asymmetric 1.0', 'Original asymmetric 2.0',
+        'Orginal symmetric 0.5', 'Orginal symmetric 1.0', 'Orginal symmetric 2.0']
+    for i in range(6):
+        hist_name = 'histograms/hist'+str(i)+'.png'
+        hist = open(hist_name,'w+')
+        num = len(list(set(int_list[i])))
+        pylab.hist(int_list[i],bins=2*num,color='#D0A9F5',label=names_2[i])
+        pylab.xlabel("Symmetric difference")
+        pylab.ylabel("#")
+        pylab.hist(int_list[i+6],bins=2*num,color='#81BEF7',width=0.6,label=names_2[i+6])
+        pylab.legend(loc='upper left')
+        pylab.savefig(hist)
+        pylab.clf()

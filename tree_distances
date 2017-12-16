@@ -9,6 +9,8 @@ def compare_dist(ref_tree,compare_trees):
 
     sym_dist_list = []
 
+    # Loop through all trees and compare them to the reference tree using
+    # symmetric difference
     for tree in compare_trees:
         tree.encode_bipartitions()
         sym_dist = treecompare.symmetric_difference(ref_tree, tree)
@@ -20,6 +22,7 @@ def get_trees(tree_dir):
 
     tree_list = []
 
+    # Loop through given directory and get all .tree-files
     for (dirpath, dirname, filename) in os.walk(tree_dir):
         for spec_file in filename:
             if '.tree' in spec_file:
@@ -35,15 +38,18 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # Get the paths to all the trees
     trees = get_trees(args.compare_trees)
-    
+
+    # Read all the trees as trees and compare them
     tns = dendropy.TaxonNamespace()
     ref_tree = dendropy.Tree.get(path=args.ref_tree,schema='newick',taxon_namespace=tns)
     ref_tree.encode_bipartitions()
     compare_trees = [dendropy.Tree.get(path=t,schema='newick',taxon_namespace=tns) for t in trees]
+    sym_dist_list = compare_dist(ref_tree,compare_trees)
 
+    # Write the result to a file
     outfile_name = 'compare_files/comparison_' + args.compare_trees.split('_')[0] + '_' + args.compare_trees.split('/')[-1] + '.txt'
     outfile = open(outfile_name,'w+')
-    sym_dist_list = compare_dist(ref_tree,compare_trees)
     for dist in sym_dist_list:
         outfile.write(str(dist) + '\n')

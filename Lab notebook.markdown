@@ -8,8 +8,6 @@ Started by trying to write a script to check for and remove noise and then gener
 
 Also set up a start to a project report with all the appropriate sections.
 
-Hope to be done by friday!
-
 ### Monday, Dec 11th
 
 Tried to work out what I was doing wrong with `fastprot` and `fnj`, but I have been unable to locate the problem.
@@ -38,6 +36,16 @@ I now have all my data, but I still need to work on the controls and write the r
 
 Noticed something was wrong somewhere in my code because the smallest value for the symmetric distance for one of the filtered alignments was zero... so I spent almost all day locating, but at last I located it. So, now I have what I hope to be the correct data!
 
-Now it is time for the controls and for the report. Starts to seem a bit optimistic to be done by tomorrow, but hopefully I can be done by Saturday, at least!
+Also made the controls and validated my script.
 
 ### Friday, Dec 15th
+
+Fixed up the code a bit with comments and more intuitive names.
+
+Extracted the information I need for my report from the result files with the symmetric difference. Made both a table with the max, min, mean and median values as well as histograms of all the symmetric differences to compare the variance.
+
+Also started writing a bit more on my report.
+
+### Monday, Dec 18th
+
+Finished my report. All done!
