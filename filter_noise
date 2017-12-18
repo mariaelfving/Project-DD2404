@@ -4,6 +4,7 @@ import argparse
 import subprocess
 import cogent
 import os
+import sys
 from cogent.app import fasttree
 from cogent.phylo import nj, distance
 from cogent.evolve.models import JTT92
@@ -48,15 +49,15 @@ def remove_noise(msa):
         if not is_noisy(col):
             valid_index.append(cols.index(col))
 
+    # If all sequences were noisy, exit with a message saying so
+    assert valid_index, 'All columns were noisy, exiting program'
+
     filtered_msa = []
 
     # Recreate the filtered sequences and append them to the list 'filtered_msa'
     for record in msa:
         seq = ('').join([record.seq[i] for i in valid_index])
         filtered_msa.append(SeqRecord(Seq(str(seq)), str(record.id), str(record.name), str(record.description)))
-
-    # If all sequences were noisy, exit with a message saying so
-    assert filtered_msa, 'All sequences were noisy, exiting program'
 
     # Make the filtered sequences into a multiple sequence alignment
     return Align.MultipleSeqAlignment(filtered_msa)
@@ -74,11 +75,16 @@ if __name__ == '__main__':
     # Open the original alignment and filter it
     input_name = './' + args.input
     input_file = open(input_name,'r')
-    orig_alignment = AlignIO.read(input_file,'fasta')
+    try:
+        orig_alignment = AlignIO.read(input_file,'fasta')
+    except ValueError:
+        print('No records found - empty file, exiting program')
+        sys.exit()
     filtered_alignment = remove_noise(orig_alignment)
 
     # Create the output in an appropriate place and write the result to that file
-    output_name = './filtered_msa/' + args.output.split('/')[1] + '/' + args.output.split('/')[2]
+    #output_name = './filtered_msa/' + args.output.split('/')[1] + '/' + args.output.split('/')[2]
+    output_name = args.output
     output_file = open(output_name,'w+')
 
     AlignIO.write(filtered_alignment,output_file,'fasta')
