@@ -13,3 +13,5 @@ Usage:
 * Run `compare.sh`
 
 * Run `eval_result`
+
+Results are written to the file `results` and to the images in the directory `histograms`
