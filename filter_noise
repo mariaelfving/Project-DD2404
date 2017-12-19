@@ -23,7 +23,8 @@ def is_noisy(seq):
 
     # Check if at least 50 % of amino acids are unique
     amino = dict((letter,seq.count(letter)) for letter in seq)
-    if len(amino) >= seq_len / 2:
+    unique = amino.values().count(1)
+    if unique >= seq_len / 2:
         return True
 
     # Check if any amino acids appear more than twice
