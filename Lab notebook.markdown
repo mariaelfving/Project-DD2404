@@ -52,6 +52,4 @@ Worked on the report. Made tables and figures look nice and understandable.
 
 ### Tuesday, Dec 19th
 
-Last finishing touches on the report and pushed everything to the git. Will give a read-through tomorrow and then I think I am done!
-
-### Wednesday, Dec 20th
+Last finishing touches on the report and pushed everything to the git. Gave it one last read-through and now I think I am done!
